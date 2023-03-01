@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rabia Nur Kavi | Electron Js...</title>
+    <link rel="stylesheet" href="C:\Users\Rabia Nur\Desktop\electronApplication\electron-basic\assets\bootstrap.min.css">
+</head>
+<body>
+    <div class="container pt-5">
+        <h1 class="text-center"> Electon js Dersleri</h1>
+        <div class="row">
+            <div class="col-md-8 offset-2 pt-2">
+                <input type="text" id="value" />
+                <button class="btn btn-primary" id="sendBtn">Gönder</button>
+            </div> 
+        </div>
+    
+        <div class="row">
+           <div class="col-md-8 offset-2 pt-2">
+            <button class="btn-block btn btn-warning" id="openNewBtn">Yeni Bir Pencere Aç</button>
+           </div>
+        </div>
+    </div> 
+<script>
+    const electron = require("electron");
+    //ipcrenderer gönderdiğimiz veriyi bir event şeklinde gönderiyor 
+    const{ ipcRenderer } = electron;
+    
+
+    let sendBtn = document.querySelector("#sendBtn");
+    let inputValue=document.querySelector("#value");
+    let openNew=document.querySelector("#openNewBtn")
+
+    sendBtn.addEventListener("click", () =>{
+        //ipcRenderer.send("key", "kablosuzkedi | electron.js"); //key dedğimiz bizim eventimiz
+        ipcRenderer.send("key:inputValue", inputValue.value)
+    });
+    
+    openNew.addEventListener("click", () => {
+        ipcRenderer.send("key:newWindow");
+    });
+</script>
+</body>
+</html>

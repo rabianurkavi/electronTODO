@@ -1,0 +1,14 @@
+{
+  "name": "to-do",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Rabia Nur Kavi",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^23.1.1"
+  }
+}
