@@ -4,7 +4,9 @@ const path=require("path");
 
 const { app,BrowserWindow,Menu,ipcMain} = electron;
 
-let mainWindow;
+let mainWindow, addWindow;
+let todoList = [];
+
 app.on("ready", () => {
 
 
@@ -14,7 +16,7 @@ app.on("ready", () => {
         webPreferences:{
             nodeIntegration:true,
             contextIsolation:false,
-            
+            enableRemoteModule:true
         }
      });
      mainWindow.on("close", ()=>{
@@ -31,6 +33,26 @@ app.on("ready", () => {
     //MENÜ
     const mainMenu=Menu.buildFromTemplate(mainMenuTemplate) //templateinden bir menü üret 
     Menu.setApplicationMenu(mainMenu);
+
+    //NEW TODO PENCERESİ EVENTLERİ
+
+    ipcMain.on("newTodo:close", ()=>{
+        addWindow.close();
+        addWindow=null;
+    })
+
+    ipcMain.on("newTodo:save", (err,data)=>{
+        if(data){
+            todoList.push({
+                id: todoList.length + 1,
+                text: data
+            });
+            console.log(todoList);
+            addWindow.close();
+            addWindow=null;
+        }
+        
+    })
 })
 const mainMenuTemplate=[
     {
@@ -78,7 +100,12 @@ function createWindow(){
         width: 480,
         height: 175,
         title: "Yeni Bir Pencere",
-        resizable:false
+        resizable:false,
+        webPreferences:{
+            nodeIntegration:true,
+            contextIsolation:false,
+            enableRemoteModule:true
+        }
     })
     addWindow.loadURL(url.format({
         pathname: path.join(__dirname, "pages/newTodo.html"),
@@ -91,4 +118,7 @@ function createWindow(){
     })
 
     
+}
+function getTodoList(){
+    console.log(todoList);
 }
