@@ -15,3 +15,7 @@ body {
   .main-container {
     z-index: 0;
   }
+
+  .todo-item{
+    background-color: #6bf0ad!important;
+  }

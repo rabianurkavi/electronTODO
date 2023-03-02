@@ -43,10 +43,14 @@ app.on("ready", () => {
 
     ipcMain.on("newTodo:save", (err,data)=>{
         if(data){
-            todoList.push({
-                id: todoList.length + 1,
+            let todo={
+                id: todoList.length +1,
                 text: data
-            });
+            };
+            todoList.push(todo);
+
+            mainWindow.webContents.send("todo:addItem", todo);
+
             console.log(todoList);
             addWindow.close();
             addWindow=null;
