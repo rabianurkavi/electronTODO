@@ -1,6 +1,8 @@
 const electron = require("electron")
 const { ipcRenderer } = electron
 
+checkTodoCount()
+
 ipcRenderer.on("todo:addItem", (err, todo) => {
     //container
 const container= document.querySelector(".todo-container")
@@ -38,6 +40,20 @@ col.appendChild(deleteBtn);
 row.appendChild(col);
 
 container.appendChild(row);
+checkTodoCount()
+
 })
+
+//alert ile uyarı vermek için verinin olup olmadığı
+function checkTodoCount(){
+    const container = document.querySelector(".todo-container")
+    const alertContainer = document.querySelector(".alert-container")
+
+    if(container.children.length!=0){
+        alertContainer.style.display="none"
+    }else{
+        alertContainer.style.display="block"
+    }
+}
 
 
