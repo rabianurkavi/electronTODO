@@ -45,15 +45,15 @@ app.on("ready", () => {
         if(data){
             let todo={
                 id: todoList.length +1,
-                text: data
+                text: data.todoValue
             };
             todoList.push(todo);
 
             mainWindow.webContents.send("todo:addItem", todo);
-
-            console.log(todoList);
-            addWindow.close();
-            addWindow=null;
+            if(data.ref=="new"){
+                addWindow.close();
+                addWindow.null;
+            }
         }
         
     })

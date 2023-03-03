@@ -3,6 +3,14 @@ const { ipcRenderer } = electron
 
 checkTodoCount()
 
+const inputValue=document.querySelector("#todoValue");
+
+document.querySelector("#addBtn").addEventListener("click",() =>{
+    ipcRenderer.send("newTodo:save", {
+        ref:"main", todoValue:todoValue.value});
+    todoValue.value="";
+})
+
 ipcRenderer.on("todo:addItem", (err, todo) => {
     //container
 const container= document.querySelector(".todo-container")
@@ -28,9 +36,10 @@ deleteBtn.className= "btn btn-sm btn-outline-danger flex-shrink-1"
 deleteBtn.innerText= "X"
 
 //deleteBtn e tıklanıldığında event ortaya çıkacak
-deleteBtn.addEventListener("click", () =>{
+deleteBtn.addEventListener("click", (e) =>{
     if(confirm("Bu kaydı silmek istediğinizden emin misiniz?")){
-        //TODO
+        e.target.parentNode.parentNode.remove()
+        checkTodoCount();
     }
 })
 
