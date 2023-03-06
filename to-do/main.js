@@ -40,6 +40,9 @@ app.on("ready", () => {
         addWindow.close();
         addWindow=null;
     })
+    ipcMain.on("close", ()=>{
+        app.quit();
+    })
 
     ipcMain.on("newTodo:save", (err,data)=>{
         if(data){

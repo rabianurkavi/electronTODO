@@ -11,6 +11,13 @@ document.querySelector("#addBtn").addEventListener("click",() =>{
     todoValue.value="";
 })
 
+document.querySelector("#closeBtn").addEventListener("click", () =>{
+    if(confirm("Çıkmak istiyor musunuz?")){
+        ipcRenderer.send("close")
+    }
+    
+})
+
 ipcRenderer.on("todo:addItem", (err, todo) => {
     //container
 const container= document.querySelector(".todo-container")
@@ -21,7 +28,7 @@ row.className = "row"
 
 //col
 const col =document.createElement("div")
-col.className="todo-item p-2 mb-3 text-light bg-dark col-md-8 offset-2 shadow card d-flex justify-content-center flex-row align-items-center"
+col.className="todo-item p-2 mb-3 text-light bg-dark col-md-12 shadow card d-flex justify-content-center flex-row align-items-center"
 //col.style.backgroundColor="#b2e2eb!important"
 
 //p
@@ -57,6 +64,7 @@ checkTodoCount()
 function checkTodoCount(){
     const container = document.querySelector(".todo-container")
     const alertContainer = document.querySelector(".alert-container")
+    document.querySelector(".total-count-container").innerText=container.children.length;
 
     if(container.children.length!=0){
         alertContainer.style.display="none"
