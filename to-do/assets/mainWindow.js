@@ -5,6 +5,16 @@ checkTodoCount()
 
 const inputValue=document.querySelector("#todoValue");
 
+inputValue.addEventListener("keypress", (e) => {
+    if(e.keyCode==13){
+        ipcRenderer.send("newTodo:save", {
+          ref:"main",
+          todoValue:e.target.value
+    });
+          e.target.value="";
+    }
+})
+
 document.querySelector("#addBtn").addEventListener("click",() =>{
     ipcRenderer.send("newTodo:save", {
         ref:"main", todoValue:todoValue.value});
