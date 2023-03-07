@@ -5,6 +5,13 @@ checkTodoCount()
 
 const inputValue=document.querySelector("#todoValue");
 
+ipcRenderer.on("initApp", (e,todos)  => {
+    todos.forEach(todo => {
+        drawRow(todo)
+    });
+   
+})
+
 inputValue.addEventListener("keypress", (e) => {
     if(e.keyCode==13){
         ipcRenderer.send("newTodo:save", {
@@ -28,8 +35,24 @@ document.querySelector("#closeBtn").addEventListener("click", () =>{
     
 })
 
-ipcRenderer.on("todo:addItem", (err, todo) => {
-    //container
+ipcRenderer.on("todo:addItem", (e, todo) => {
+     drawRow(todo)//rowların gelmesi
+});
+
+//alert ile uyarı vermek için verinin olup olmadığı
+function checkTodoCount(){
+    const container = document.querySelector(".todo-container")
+    const alertContainer = document.querySelector(".alert-container")
+    document.querySelector(".total-count-container").innerText=container.children.length;
+
+    if(container.children.length!=0){
+        alertContainer.style.display="none"
+    }else{
+        alertContainer.style.display="block"
+    }
+}
+function drawRow(todo){
+//container
 const container= document.querySelector(".todo-container")
 
 //row
@@ -44,7 +67,7 @@ col.className="todo-item p-2 mb-3 text-light bg-dark col-md-12 shadow card d-fle
 //p
 const p =document.createElement("p")
 p.className="m-0 w-100"
-p.innerText = todo.text
+p.innerText = todo.text;
 
 
 //Sil Btn
@@ -68,19 +91,6 @@ row.appendChild(col);
 container.appendChild(row);
 checkTodoCount()
 
-})
-
-//alert ile uyarı vermek için verinin olup olmadığı
-function checkTodoCount(){
-    const container = document.querySelector(".todo-container")
-    const alertContainer = document.querySelector(".alert-container")
-    document.querySelector(".total-count-container").innerText=container.children.length;
-
-    if(container.children.length!=0){
-        alertContainer.style.display="none"
-    }else{
-        alertContainer.style.display="block"
-    }
 }
 
 

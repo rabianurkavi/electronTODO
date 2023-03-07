@@ -1,6 +1,8 @@
 const electron= require("electron");
 const url=require("url")
 const path=require("path");
+const db=require("./lib/connection").db;
+
 
 const { app,BrowserWindow,Menu,ipcMain} = electron;
 
@@ -8,9 +10,6 @@ let mainWindow, addWindow;
 let todoList = [];
 
 app.on("ready", () => {
-
-
-
     mainWindow=new BrowserWindow({
         resizable:false,
         webPreferences:{
@@ -59,8 +58,14 @@ app.on("ready", () => {
             }
         }
         
+    });
+    //webcontentimin bulunduğu dom yüklenmişse bu fonksiyonu çalıştır.
+    mainWindow.webContents.once("dom-ready", () => {
+        db.query("select * from todos", (error,results,fields) => {
+            mainWindow.webContents.send("initApp",results)//uygulama açıldığında kayıtların listelenmesi
+        })
     })
-})
+});
 const mainMenuTemplate=[
     {
       label: "Dosya",
