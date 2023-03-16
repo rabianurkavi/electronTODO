@@ -74,11 +74,13 @@ p.innerText = todo.text;
 const deleteBtn= document.createElement("button")
 deleteBtn.className= "btn btn-sm btn-outline-danger flex-shrink-1"
 deleteBtn.innerText= "X"
+deleteBtn.setAttribute("data-id", todo.id)
 
 //deleteBtn e tıklanıldığında event ortaya çıkacak
 deleteBtn.addEventListener("click", (e) =>{
     if(confirm("Bu kaydı silmek istediğinizden emin misiniz?")){
-        e.target.parentNode.parentNode.remove()
+        e.target.parentNode.parentNode.remove();
+        ipcRenderer.send("remove:todo", e.target.getAttribute("data-id"));
         checkTodoCount();
     }
 })

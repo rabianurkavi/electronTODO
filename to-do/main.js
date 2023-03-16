@@ -65,6 +65,14 @@ app.on("ready", () => {
             mainWindow.webContents.send("initApp",results)//uygulama açıldığında kayıtların listelenmesi
         })
     })
+
+    ipcMain.on("remove:todo", (e,id) => {
+          db.query("DELETE FROM todos WHERE id =?", id, (e,r,f) =>{
+            if(r.affectedRows>1){
+                console.log("Silme işlemi başarılı.")
+            }
+          })
+    })
 });
 const mainMenuTemplate=[
     {
