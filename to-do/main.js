@@ -7,7 +7,7 @@ const db=require("./lib/connection").db;
 const { app,BrowserWindow,Menu,ipcMain} = electron;
 
 let mainWindow, addWindow;
-let todoList = [];
+
 
 app.on("ready", () => {
     mainWindow=new BrowserWindow({
@@ -44,14 +44,18 @@ app.on("ready", () => {
     })
 
     ipcMain.on("newTodo:save", (err,data)=>{
-        if(data){
-            let todo={
-                id: todoList.length +1,
-                text: data.todoValue
-            };
-            todoList.push(todo);
+        if(data){          
+            db.query("INSERT INTO todos SET text = ?", data.todoValue, (e,r,f) =>{
+                if(r.insertId > 0){
+                    mainWindow.webContents.send("todo:addItem", {
+                        id: r.insertId,
+                        text: data.todoValue
+                    })
+                }
+            })
 
-            mainWindow.webContents.send("todo:addItem", todo);
+
+           // mainWindow.webContents.send("todo:addItem", todo);
             if(data.ref=="new"){
                 addWindow.close();
                 addWindow.null;
@@ -138,7 +142,4 @@ function createWindow(){
     })
 
     
-}
-function getTodoList(){
-    console.log(todoList);
 }

@@ -3,7 +3,7 @@ const { ipcRenderer } = electron
 
 checkTodoCount()
 
-const inputValue=document.querySelector("#todoValue");
+const todoValue=document.querySelector("#todoValue");
 
 ipcRenderer.on("initApp", (e,todos)  => {
     todos.forEach(todo => {
@@ -12,7 +12,7 @@ ipcRenderer.on("initApp", (e,todos)  => {
    
 })
 
-inputValue.addEventListener("keypress", (e) => {
+todoValue.addEventListener("keypress", (e) => {
     if(e.keyCode==13){
         ipcRenderer.send("newTodo:save", {
           ref:"main",
@@ -24,7 +24,9 @@ inputValue.addEventListener("keypress", (e) => {
 
 document.querySelector("#addBtn").addEventListener("click",() =>{
     ipcRenderer.send("newTodo:save", {
-        ref:"main", todoValue:todoValue.value});
+        ref:"main", 
+        todoValue:todoValue.value
+    });
     todoValue.value="";
 })
 
